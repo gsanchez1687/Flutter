@@ -98,7 +98,9 @@ class CustonBotton extends StatelessWidget {
     return FloatingActionButton(
       elevation: 0, //segundo boton (-)
       shape: const StadiumBorder(),
+      enableFeedback: true,
       onPressed: onPressed,
+      hoverElevation: 10,
       child: Icon(icon),
     );
   }
