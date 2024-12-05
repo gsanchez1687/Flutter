@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yes_no_app/config/theme/app_theme.dart';
-import 'package:yes_no_app/presentation/screens/chat/chat_scream.dart';
+import 'package:yes_no_app/feature/chat/home/chat_scream.dart';
 
 void main() {
   runApp(const MyApp());
