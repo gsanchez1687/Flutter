@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:yes_no_app/feature/chat/widgets/chat/her_message_bubble.dart';
-import 'package:yes_no_app/feature/chat/widgets/chat/my_message_bubble.dart';
-import 'package:yes_no_app/feature/chat/widgets/shared/message_field_box.dart';
 
-class ChatScream extends StatelessWidget {
-  const ChatScream({super.key});
-
+class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +9,7 @@ class ChatScream extends StatelessWidget {
           padding: const EdgeInsets.all(4.0),
           child: GestureDetector(
             onTap: () {
-               _showImageModal(context);
+              _showImageModal(context);
             },
             child: const CircleAvatar(
               backgroundImage: NetworkImage(
@@ -29,8 +24,8 @@ class ChatScream extends StatelessWidget {
       body: _chatView(), //Esto se puede ver como un div en html
     );
   }
-}
 
+  // Función para mostrar el modal con la imagen
   void _showImageModal(BuildContext context) {
     showDialog(
       context: context,
@@ -62,23 +57,16 @@ class ChatScream extends StatelessWidget {
     );
   }
 
-class _chatView extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(itemBuilder: (context, index) {
-                return (index % 2 == 0  ) ? const MyMessageBubble() : const HerMessageBubble();
-              }),
-            ),
-            const MessageFieldBox()
-          ],
-        ),
-      ),
+  // Ejemplo de widget para el cuerpo
+  Widget _chatView() {
+    return const Center(
+      child: Text('Vista del chat'),
     );
   }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: ChatScreen(),
+  ));
 }
