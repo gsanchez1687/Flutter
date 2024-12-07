@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:yes_no_app/domain/entities/message.dart';
 import 'package:yes_no_app/feature/chat/widgets/chat/her_message_bubble.dart';
 import 'package:yes_no_app/feature/chat/widgets/chat/my_message_bubble.dart';
 import 'package:yes_no_app/feature/chat/widgets/shared/message_field_box.dart';
+import 'package:yes_no_app/feature/providers/chat_provider.dart';
+
 
 class ChatScream extends StatelessWidget {
   const ChatScream({super.key});
@@ -14,11 +18,11 @@ class ChatScream extends StatelessWidget {
           padding: const EdgeInsets.all(4.0),
           child: GestureDetector(
             onTap: () {
-               _showImageModal(context);
+              _showImageModal(context);
             },
             child: const CircleAvatar(
               backgroundImage: NetworkImage(
-                'https://static.wikia.nocookie.net/skyhigh/images/5/53/Gwen.png/revision/latest/scale-to-width-down/300?cb=20141201201025&path-prefix=es',
+                'https://i.pinimg.com/736x/5f/b4/ee/5fb4ee34ec23c23f713bb41ac0558084.jpg',
               ),
             ),
           ),
@@ -31,51 +35,59 @@ class ChatScream extends StatelessWidget {
   }
 }
 
-  void _showImageModal(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  'https://static.wikia.nocookie.net/skyhigh/images/5/53/Gwen.png/revision/latest/scale-to-width-down/300?cb=20141201201025&path-prefix=es',
-                  fit: BoxFit.cover,
-                ),
+void _showImageModal(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                'https://i.pinimg.com/736x/5f/b4/ee/5fb4ee34ec23c23f713bb41ac0558084.jpg',
+                fit: BoxFit.cover,
               ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Cierra el modal
-                },
-                child: const Text('Cerrar'),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Cierra el modal
+              },
+              child: const Text('Cerrar'),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
 
 class _chatView extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+
+    // ignore: unused_local_variable
+    final chatProvider = context.watch<ChatProvider>();
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: [
             Expanded(
-              child: ListView.builder(itemBuilder: (context, index) {
-                return (index % 2 == 0  ) ? const MyMessageBubble() : const HerMessageBubble();
+              child: ListView.builder(itemCount: chatProvider.messageList.length  ,itemBuilder: (context, index) {
+               final mesaage = chatProvider.messageList[index];
+               return (mesaage.fromWho == FromWho.hers) ? HerMessageBubble(message: mesaage) : MyMessageBubble(message: mesaage);
               }),
             ),
-            const MessageFieldBox()
+            MessageFieldBox(
+              onValue: (value) => chatProvider.sendMessage(value),
+            )
           ],
         ),
       ),
