@@ -8,16 +8,23 @@ const List<Color> colorThemes = [
   Colors.green,
   Colors.yellow,
   Colors.orange,
-  Colors.pink
+  Colors.pink,
+  Color(0xFF34C759)
 ];
 
 class AppTheme {
   late final int selectedColor;
-  AppTheme( {
-      this.selectedColor = 0
-    }):assert(selectedColor >= 0 && selectedColor < colorThemes.length, 'Color must be between 0 and ${colorThemes.length - 1}');
+  AppTheme({
+    this.selectedColor = 0,
+  }) : assert(selectedColor >= 0 && selectedColor < colorThemes.length, 'Color must be between 0 and ${colorThemes.length - 1}');
+  
   ThemeData get theme => ThemeData(
+        textTheme: const TextTheme(bodyLarge: TextStyle(color: Colors.white, fontSize: 20)),
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: colorThemes[selectedColor]),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: colorThemes[selectedColor],
+          brightness: Brightness.dark,
+        ),
+        scaffoldBackgroundColor: Colors.transparent, // Set scaffold background to transparent
       );
 }
